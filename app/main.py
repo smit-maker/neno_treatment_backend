@@ -43,7 +43,20 @@ app = create_app()
 def read_root():
     return {"Hello": "World"}
 
-
+@app.post("/run_command/")
+async def run_command(command: str):
+    try:
+        # Run the command using subprocess
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        # Check if the command was successful
+        if result.returncode == 0:
+            return {"output": result.stdout}
+        else:
+            # If the command failed, raise an HTTPException with the error message
+            raise HTTPException(status_code=500, detail=result.stderr)
+    except Exception as e:
+        # Handle any other exceptions
+        raise HTTPException(status_code=500, detail=str(e))
 
 def find_alembic_ini(start_dir):
     # Walk through the directory tree to find alembic.ini file
@@ -68,3 +81,4 @@ async def upgrade_alembic():
     except Exception as e:
         # Handle any other exceptions
         raise HTTPException(status_code=500, detail=str(e))
+    
