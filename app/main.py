@@ -1,6 +1,7 @@
 from typing import Union
+import subprocess
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 # Database
@@ -42,5 +43,17 @@ app = create_app()
 def read_root():
     return {"Hello": "World"}
 
-
-    
+@app.post("/upgrade_alembic")
+async def upgrade_alembic():
+    try:
+        # Run the command using subprocess
+        result = subprocess.run(["alembic", "upgrade", "head"], capture_output=True, text=True)
+        # Check if the command was successful
+        if result.returncode == 0:
+            return {"message": "Alembic upgrade successful"}
+        else:
+            # If the command failed, raise an HTTPException with the error message
+            raise HTTPException(status_code=500, detail=result.stderr)
+    except Exception as e:
+        # Handle any other exceptions
+        raise HTTPException(status_code=500, detail=str(e))
