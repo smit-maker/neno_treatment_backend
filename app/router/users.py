@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import Depends, APIRouter, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.orm import Session
@@ -16,7 +17,7 @@ from app.databaseutils import get_db
 from app.model.users import UserModel, BranchModel
 
 # Schemas
-from app.schema.users import Token, TokenData, CurrentUser, CreateUserSchema, UpdateUserSchema, CreateBranchSchema, UpdateBranchSchema
+from app.schema.users import BranchSchema, Token, TokenData, CurrentUser, CreateUserSchema, UpdateUserSchema, CreateBranchSchema, UpdateBranchSchema
 
 router = APIRouter(prefix='/users', tags=['Users'])
 
@@ -119,7 +120,7 @@ def me(current_user: CurrentUser = Depends(get_current_active_user)):
 
 
 @router.get("/")
-def users(current_user: CreateUserSchema = Depends(get_current_active_user), db: Session = Depends(get_db)):
+def get_users(current_user: CreateUserSchema = Depends(get_current_active_user), db: Session = Depends(get_db)):
     users = db.query(UserModel).all()
     return users
 
@@ -163,14 +164,14 @@ def profile_update(user: UpdateUserSchema, current_user: CreateUserSchema = Depe
 
 # /////// branches
 
-@router.get("/branches")
-def branches(current_user: CreateUserSchema = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    users = db.query(BranchModel).all()
-    return users
+@router.get("/branches", response_model=List[BranchSchema])
+def get_branches(current_user: CreateUserSchema = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    branches = db.query(BranchModel).all()
+    return branches
 
 
 @router.post("/create_branch")
-def create_branch(branch: CreateBranchSchema, db: Session = Depends(get_db), current_user: CreateUserSchema = Depends(get_current_active_user)):
+def create_branch(branch: CreateBranchSchema, db: Session = Depends(get_db)):
     db_branch = BranchModel(name=branch.name)
     db.add(db_branch)
     db.commit()
@@ -190,3 +191,5 @@ def update_branch(branch: UpdateBranchSchema, db: Session = Depends(get_db)):
     return "success"
 
 # Routers ------------------------------------------------------------------------------------------
+
+

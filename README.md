@@ -1,29 +1,81 @@
+uvicorn app.main:app --host 103.250.149.54 --port 8090 --reload
 uvicorn app.main:app --port 8090 --reload
+alembic revision --autogenerate -m "Added tables"
 
-# Deploy FastAPI on Render
+# New User Create
+{
+  "username": "smit@gmail.com",
+  "password": "smit@123"
+}
+{
+  "id": 1,
+  "username": "smit@gmail.com",
+  "email": "smit@gmail.com",
+  "password": "smit@123",
+  "f_name": "Smit",
+  "l_name": "Patel",
+  "gender": "MALE",
+  "dob": "2000-01-01",
+  "branch": 1
+}
+----
+{
+  "username": "hitesh@gmail.com",
+  "password": "hitesh@123"
+}
+{
+  "id": 2,
+  "username": "hitesh@gmail.com",
+  "email": "hitesh@gmail.com",
+  "f_name": "Hitesh",
+  "l_name": "Zala",
+  "gender": "MALE",
+  "dob": "2000-01-01",
+  "branch": 1
+}
 
-Use this repo as a template to deploy a Python [FastAPI](https://fastapi.tiangolo.com) service on Render.
+# Treatments Create
+{
+  "name": "Hair Removal",
+  "treatments_picture": ""
+}
+{
+  "name": "Carbon Facial",
+  "treatments_picture": ""
+}
+{
+  "name": "Body Shaping",
+  "treatments_picture": ""
+}
 
-See https://render.com/docs/deploy-fastapi or follow the steps below:
+# Sub Treatments Create
+{
+  "name": "Upper Lips",
+  "treatments_picture": "",
+  "price": 1200,
+  "mrp": 1500,
+  "discount": 20,
+  "description": "Upper Lips desc . . . .",
+  "treatment_time": "2024-02-18",
+  "treatment_id": 1
+}
+{
+  "name": "Full Face",
+  "treatments_picture": "",
+  "price": 1700,
+  "mrp": 2000,
+  "discount": 15,
+  "description": "Full Face desc . . . .",
+  "treatment_time": "2024-02-18",
+  "treatment_id": 1
+}
 
-## Manual Steps
+# Appointments
+{
+  "user_id": 1,
+  "sub_treatment_id": 1,
+  "appointment_time": "2024-02-18T19:25:47.267Z",
+  "status": "Pending"
+}
 
-1. You may use this repository directly or [create your own repository from this template](https://github.com/render-examples/fastapi/generate) if you'd like to customize the code.
-2. Create a new Web Service on Render.
-3. Specify the URL to your new repository or this repository.
-4. Render will automatically detect that you are deploying a Python service and use `pip` to download the dependencies.
-5. Specify the following as the Start Command.
 
-    ```shell
-    uvicorn main:app --host 0.0.0.0 --port $PORT
-    ```
-
-6. Click Create Web Service.
-
-Or simply click:
-
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/render-examples/fastapi)
-
-## Thanks
-
-Thanks to [Harish](https://harishgarg.com) for the [inspiration to create a FastAPI quickstart for Render](https://twitter.com/harishkgarg/status/1435084018677010434) and for some sample code!

@@ -1,6 +1,9 @@
 # Current astimated
 sql_app.db
 *.db
+*.yml
+*.html
+*.conf
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

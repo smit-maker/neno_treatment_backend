@@ -1,6 +1,8 @@
 from datetime import date
+from typing import List
 from pydantic import BaseModel
 
+from app.schema.appointment import AppointmentSchema
 
 class Token(BaseModel):
     access_token: str
@@ -11,6 +13,13 @@ class TokenData(BaseModel):
     username: str | None = None
 
 # Branch Schema
+class BranchSchema(BaseModel):
+    id: int | None = None
+    name: str | None = None
+
+    # class Config:
+    #     from_attributes = True
+
 class CreateBranchSchema(BaseModel):
     name: str | None = None
 
@@ -32,6 +41,7 @@ class CurrentUser(BaseModel):
     # disabled: bool | None = None
     # branch_id: int | None = None
     branch: CreateBranchSchema | None = None
+    # appointment_list: List[Appointment] | None = None
 
 class CreateUserSchema(BaseModel):
     username: str | None = None
